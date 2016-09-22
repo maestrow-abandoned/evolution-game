@@ -1,0 +1,35 @@
+* {
+  box-sizing: border-box;
+}
+
+div {
+  border: 1px;
+  border-style: solid;
+  overflow: auto;
+}
+
+#left-panel {
+  float: left;
+  width: 300px;
+}
+
+#center-panel {
+  margin-left: 300px;
+}
+
+.animals-container {
+  max-width: 600px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.animal {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.property {
+  max-width: 200px;
+  min-width: 50px;
+  text-align: center;
+}
