@@ -1,0 +1,21 @@
+﻿div {
+  border-style: solid;
+  border-width: 1px;
+}
+
+.player {
+  max-width: 600px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.anymal {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.property {
+  max-width: 200px;
+  min-width: 50px;
+  text-align: center;
+}
