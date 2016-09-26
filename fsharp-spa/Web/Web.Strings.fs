@@ -1,7 +1,9 @@
 ﻿namespace Web
 
+open WebSharper
 open Domain.Types
 
+[<JavaScript>]
 module Strings =
   let propertyNames = 
     [
@@ -25,7 +27,7 @@ module Strings =
       (SharpVision, "Острое зрение")
       (FatTissue, "Жировой запас")
       (Parasite, "Паразит")
-      // время летать, "")
+      // время летать
       (Trematode, "Трематода")
       (Vivaparous, "Живорождение")
       (AmbushHunting, "Засада")
@@ -37,7 +39,7 @@ module Strings =
       (Flight, "Полет")
       (SpecializationA, "Специализация A")
       (SpecializationB, "Специализация B")
-      // подарочное издание
+      // подарочный набор
       (Flighty, "Пугливое")
       (Homeothermy, "Теплокровность")
       (RStrategy, "r-Стратегия")

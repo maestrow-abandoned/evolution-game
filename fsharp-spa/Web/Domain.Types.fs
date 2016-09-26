@@ -52,8 +52,6 @@ module Types =
     //| Suckerfish
     //| Herding
 
-
-
   [<System.Flags>]
   type CanBePlayedOn = Self = 1 | Enemy = 2
 
@@ -64,7 +62,7 @@ module Types =
     // Description: string;
   }
 
-
+  type PropertyOrder = Primary | Secondary 
 
   /// Карточка в игровом наборе
   type Card = {
@@ -72,14 +70,24 @@ module Types =
     SecondaryProperty: Option<PropertyType>;
   }
 
+  exception InvalidPropertyError
+
+  /// Карточка, сыгранная как свойство
   type Property = {
     Card: Card
-    Property
-  }
+    Order: PropertyOrder
+  } with
+    member this.Validate () =
+      if this.Order = Secondary && this.Card.SecondaryProperty.IsNone then raise InvalidPropertyError
+    member this.Value = 
+      this.Validate()
+      match this.Order with
+      | Primary -> this.Card.PrimaryProperty
+      | Secondary -> this.Card.SecondaryProperty.Value
 
   type Anymal = {
     BaseCard: Card
-    Properties: Card list
+    Properties: Property list
   }
 
   type Player = Anymal list

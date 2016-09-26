@@ -12,8 +12,8 @@ open Web.Strings
 module Components =
   let toDoc elm = elm :> Doc
 
-  let createProperty (prop: PropertyType) = 
-    divAttr [attr.``class`` "property"] [text propertyNames.[prop]]
+  let createProperty (prop: Property) = 
+    divAttr [attr.``class`` "property"] [text propertyNames.[prop.Value]]
 
   let createAnymal (anymal: Anymal) =
     anymal.Properties 
@@ -23,4 +23,4 @@ module Components =
   let createPlayer (anymals: Anymal list) =
     anymals
     |> List.map (createAnymal >> toDoc)
-    |> divAttr [attr.``class`` "player"]
+    |> divAttr [attr.``class`` "player"] 

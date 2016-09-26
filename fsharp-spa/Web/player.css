@@ -4,7 +4,7 @@
 }
 
 .player {
-  max-width: 600px;
+  max-width: 1200px;
   display: flex;
   justify-content: space-around;
 }
@@ -15,7 +15,7 @@
 }
 
 .property {
-  max-width: 200px;
+  max-width: 400px;
   min-width: 50px;
   text-align: center;
-}
+} 

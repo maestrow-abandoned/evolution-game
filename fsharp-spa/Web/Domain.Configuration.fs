@@ -131,7 +131,7 @@ module Configuration =
       FoodDemand = 0; 
       CanBePlayedOn = CanBePlayedOn.Self ||| CanBePlayedOn.Enemy; 
       IsPair = false; })
-    (Cnidocites, { 
+    (Cnidocites, {  
       FoodDemand = 0; 
       CanBePlayedOn = CanBePlayedOn.Self; 
       IsPair = false; })
