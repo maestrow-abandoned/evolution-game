@@ -17954,22 +17954,40 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  });
 }());
 
+(function () {
+    var lastTime = 0;
+    var vendors = ['webkit', 'moz'];
+    for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+        window.cancelAnimationFrame =
+          window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+    }
+
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function (callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function () { callback(currTime + timeToCall); },
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function (id) {
+            clearTimeout(id);
+        };
+}());
+;
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,List,Domain,Configuration,Types;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,List,Unchecked,Operators,Domain,Types,InvalidPropertyError,T,Utils,Utils1,Seq,Math,Random,UI,Next,Doc,Web,Components,Client,Game,AttrProxy,Strings,Property,Configuration,Collections,MapModule;
  Runtime.Define(Global,{
   Domain:{
    Configuration:{
     cards:Runtime.Field(function()
     {
-     return List.map(function(tupledArg)
-     {
-      return{
-       PrimaryProperty:tupledArg[0],
-       SecondaryProperty:tupledArg[1],
-       Count:tupledArg[2]
-      };
-     },List.ofArray([[{
+     return List.ofArray([[{
       $:4
      },{
       $:0
@@ -18324,7 +18342,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       $0:{
        $:8
       }
-     },2]]));
+     },2]]);
     }),
     features:Runtime.Field(function()
     {
@@ -18560,9 +18578,301 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     })
    },
    Types:{
-    namesRu:Runtime.Field(function()
+    InvalidPropertyError:Runtime.Class({}),
+    Property:Runtime.Class({
+     Validate:function()
+     {
+      return(Unchecked.Equals(this.Order,{
+       $:1
+      })?this.Card.SecondaryProperty.$==0:false)?Operators.Raise(Runtime.New(InvalidPropertyError,{})):null;
+     },
+     get_Value:function()
+     {
+      var matchValue;
+      this.Validate();
+      matchValue=this.Order;
+      return matchValue.$==1?this.Card.SecondaryProperty.$0:this.Card.PrimaryProperty;
+     }
+    })
+   }
+  },
+  Utils:{
+   Utils:{
+    "List`1.getFromTop":function(_this,count)
     {
-     return List.ofArray([[{
+     var arg20;
+     arg20=Runtime.New(T,{
+      $:0
+     });
+     return Utils1["List`1.loop"](_this,count,_this,arg20);
+    },
+    "List`1.loop":function(_this,count,src,result)
+    {
+     var _,_1,tail,head,arg00,arg20;
+     if(count===0)
+      {
+       _=[result,src];
+      }
+     else
+      {
+       if(src.$==0)
+        {
+         _1=[result,src];
+        }
+       else
+        {
+         tail=src.$1;
+         head=src.$0;
+         arg00=count-1;
+         arg20=Runtime.New(T,{
+          $:1,
+          $0:head,
+          $1:result
+         });
+         _1=Utils1["List`1.loop"](_this,arg00,tail,arg20);
+        }
+       _=_1;
+      }
+     return _;
+    },
+    getRandomInts:function(max)
+    {
+     var projection,mapping,list,list1;
+     projection=function(tupledArg)
+     {
+      var rnd;
+      tupledArg[0];
+      rnd=tupledArg[1];
+      return rnd;
+     };
+     mapping=function(tupledArg)
+     {
+      var i;
+      i=tupledArg[0];
+      tupledArg[1];
+      return i;
+     };
+     list=Seq.toList(Seq.delay(function()
+     {
+      return Seq.map(function(i)
+      {
+       Utils1.random();
+       return[i,Math.random()];
+      },Operators.range(0,max));
+     }));
+     list1=List.sortBy(projection,list);
+     return List.map(mapping,list1);
+    },
+    random:Runtime.Field(function()
+    {
+     return Random.New();
+    }),
+    shuffle:function(lst)
+    {
+     var mapping,projection,mapping1,list,list1;
+     mapping=function(i)
+     {
+      Utils1.random();
+      return[i,Math.random()];
+     };
+     projection=function(tupledArg)
+     {
+      var rnd;
+      tupledArg[0];
+      rnd=tupledArg[1];
+      return rnd;
+     };
+     mapping1=function(tupledArg)
+     {
+      var i;
+      i=tupledArg[0];
+      tupledArg[1];
+      return i;
+     };
+     list=List.map(mapping,lst);
+     list1=List.sortBy(projection,list);
+     return List.map(mapping1,list1);
+    }
+   }
+  },
+  Web:{
+   Client:{
+    Main:Runtime.Field(function()
+    {
+     return Doc.RunById("main",Components.createPlayer(Client.player()));
+    }),
+    player:Runtime.Field(function()
+    {
+     return(Game.createRandomPlayer(Game.fullDeck()))[0];
+    })
+   },
+   Components:{
+    createAnymal:function(anymal)
+    {
+     var mapping,list,x1,ats;
+     mapping=function(x)
+     {
+      var elm;
+      elm=Components.createProperty(x);
+      return Components.toDoc(elm);
+     };
+     list=anymal.Properties;
+     x1=List.map(mapping,list);
+     ats=List.ofArray([AttrProxy.Create("class","anymal")]);
+     return Doc.Element("div",ats,x1);
+    },
+    createPlayer:function(anymals)
+    {
+     var mapping,x1,ats;
+     mapping=function(x)
+     {
+      var elm;
+      elm=Components.createAnymal(x);
+      return Components.toDoc(elm);
+     };
+     x1=List.map(mapping,anymals);
+     ats=List.ofArray([AttrProxy.Create("class","player")]);
+     return Doc.Element("div",ats,x1);
+    },
+    createProperty:function(prop)
+    {
+     return Doc.Element("div",List.ofArray([AttrProxy.Create("class","property")]),List.ofArray([Doc.TextNode(Strings.propertyNames().get_Item(prop.get_Value()))]));
+    },
+    toDoc:function(elm)
+    {
+     return elm;
+    }
+   },
+   Game:{
+    chooseRandomProperty:function(card)
+    {
+     var matchValue,order;
+     matchValue=card.SecondaryProperty;
+     order=matchValue.$==0?0:Game.rnd().Next2(0,1);
+     return Runtime.New(Property,{
+      Card:card,
+      Order:List.ofArray([{
+       $:0
+      },{
+       $:1
+      }]).get_Item(order)
+     });
+    },
+    createRandomAnymal:function(_arg1)
+    {
+     var _,propCards,baseCard;
+     if(_arg1.$==1)
+      {
+       propCards=_arg1.$1;
+       baseCard=_arg1.$0;
+       _={
+        $:1,
+        $0:{
+         BaseCard:baseCard,
+         Properties:List.map(function(card)
+         {
+          return Game.chooseRandomProperty(card);
+         },propCards)
+        }
+       };
+      }
+     else
+      {
+       _={
+        $:0
+       };
+      }
+     return _;
+    },
+    createRandomAnymalFromDeck:function(deck,propCount)
+    {
+     var patternInput,restDeck,cards;
+     patternInput=Utils1["List`1.getFromTop"](deck,propCount);
+     restDeck=patternInput[1];
+     cards=patternInput[0];
+     return[Game.createRandomAnymal(cards),restDeck];
+    },
+    createRandomPlayer:function(deck)
+    {
+     var loop,_,_1,_2,matchValue,_3,restDeck,restDeck1,anymal,_4;
+     loop=[];
+     _=Runtime.New(T,{
+      $:0
+     });
+     _1=Game.rnd().Next2(1,5);
+     loop[3]=_;
+     loop[2]=deck;
+     loop[1]=_1;
+     loop[0]=1;
+     while(loop[0])
+      {
+       if(loop[1]===0)
+        {
+         loop[0]=0;
+         _2=void(loop[1]=[loop[3],loop[2]]);
+        }
+       else
+        {
+         matchValue=Game.createRandomAnymalFromDeck(loop[2],Game.rnd().Next2(1,6));
+         if(matchValue[0].$==0)
+          {
+           restDeck=matchValue[1];
+           loop[0]=0;
+           _3=void(loop[1]=[loop[3],restDeck]);
+          }
+         else
+          {
+           restDeck1=matchValue[1];
+           anymal=matchValue[0].$0;
+           _4=loop[1]-1;
+           loop[3]=Runtime.New(T,{
+            $:1,
+            $0:anymal,
+            $1:loop[3]
+           });
+           loop[2]=restDeck1;
+           loop[1]=_4;
+           _3=void(loop[0]=1);
+          }
+         _2=_3;
+        }
+      }
+     return loop[1];
+    },
+    fullDeck:Runtime.Field(function()
+    {
+     var x,mapping,lst;
+     x=Configuration.cards();
+     mapping=function(tupledArg)
+     {
+      var pri,sec,count;
+      pri=tupledArg[0];
+      sec=tupledArg[1];
+      count=tupledArg[2];
+      return Seq.toList(Seq.delay(function()
+      {
+       return Seq.map(function()
+       {
+        return{
+         PrimaryProperty:pri,
+         SecondaryProperty:sec
+        };
+       },Operators.range(1,count));
+      }));
+     };
+     lst=List.collect(mapping,x);
+     return Utils1.shuffle(lst);
+    }),
+    rnd:Runtime.Field(function()
+    {
+     return Random.New();
+    })
+   },
+   Strings:{
+    propertyNames:Runtime.Field(function()
+    {
+     var elements;
+     elements=List.ofArray([[{
       $:0
      },"\u0425\u0438\u0449\u043d\u0438\u043a"],[{
       $:1
@@ -18639,6 +18949,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      },"\u0420\u0435\u043a\u043e\u043c\u0431\u0438\u043d\u0430\u0446\u0438\u044f"],[{
       $:37
      },"\u042d\u0434\u0438\u0444\u0438\u043a\u0430\u0442\u043e\u0440"]]);
+     return MapModule.OfArray(Seq.toArray(elements));
     })
    }
   }
@@ -18646,115 +18957,41 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Runtime.OnInit(function()
  {
   List=Runtime.Safe(Global.WebSharper.List);
+  Unchecked=Runtime.Safe(Global.WebSharper.Unchecked);
+  Operators=Runtime.Safe(Global.WebSharper.Operators);
   Domain=Runtime.Safe(Global.Domain);
-  Configuration=Runtime.Safe(Domain.Configuration);
-  return Types=Runtime.Safe(Domain.Types);
- });
- Runtime.OnLoad(function()
- {
-  Types.namesRu();
-  Configuration.features();
-  Configuration.cards();
-  return;
- });
-}());
-
-(function () {
-    var lastTime = 0;
-    var vendors = ['webkit', 'moz'];
-    for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-        window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-        window.cancelAnimationFrame =
-          window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
-    }
-
-    if (!window.requestAnimationFrame)
-        window.requestAnimationFrame = function (callback, element) {
-            var currTime = new Date().getTime();
-            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            var id = window.setTimeout(function () { callback(currTime + timeToCall); },
-              timeToCall);
-            lastTime = currTime + timeToCall;
-            return id;
-        };
-
-    if (!window.cancelAnimationFrame)
-        window.cancelAnimationFrame = function (id) {
-            clearTimeout(id);
-        };
-}());
-;
-(function()
-{
- var Global=this,Runtime=this.IntelliFactory.Runtime,UI,Next,Doc,Web,Components,Client,List,T,AttrProxy;
- Runtime.Define(Global,{
-  Web:{
-   Client:{
-    Main:Runtime.Field(function()
-    {
-     return Doc.RunById("main",Components.createPlayer(Client.playerState()));
-    }),
-    playerState:Runtime.Field(function()
-    {
-     return List.ofArray([List.ofArray(["\u0445\u0438\u0449\u043d\u0438\u043a","\u043f\u043e\u043b\u0435\u0442","\u0432\u043e\u0434\u043e\u043f\u043b\u0430\u0432\u0430\u044e\u0449\u0435\u0435"]),List.ofArray(["\u0442\u0435\u043f\u043b\u043e\u043a\u0440\u043e\u0432\u043d\u043e\u0441\u0442\u044c","r-\u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f","\u043d\u043e\u0440\u043d\u043e\u0435","\u0440\u0430\u043a\u043e\u0432\u0438\u043d\u0430","\u0436\u0438\u0440","\u0436\u0438\u0440"]),List.ofArray(["\u044f\u0434\u043e\u0432\u0438\u0442\u043e\u0435"]),List.ofArray(["\u044f\u0434\u043e\u0432\u0438\u0442\u043e\u0435","\u0442\u0435\u043f\u043b\u043e\u043a\u0440\u043e\u0432\u043d\u043e\u0441\u0442\u044c","r-\u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f"]),Runtime.New(T,{
-      $:0
-     })]);
-    })
-   },
-   Components:{
-    createAnymal:function(props)
-    {
-     var mapping,x1,ats;
-     mapping=function(x)
-     {
-      var elm;
-      elm=Components.createProperty(x);
-      return Components.toDoc(elm);
-     };
-     x1=List.map(mapping,props);
-     ats=List.ofArray([AttrProxy.Create("class","anymal")]);
-     return Doc.Element("div",ats,x1);
-    },
-    createPlayer:function(anymals)
-    {
-     var mapping,x1,ats;
-     mapping=function(x)
-     {
-      var elm;
-      elm=Components.createAnymal(x);
-      return Components.toDoc(elm);
-     };
-     x1=List.map(mapping,anymals);
-     ats=List.ofArray([AttrProxy.Create("class","player")]);
-     return Doc.Element("div",ats,x1);
-    },
-    createProperty:function(name)
-    {
-     return Doc.Element("div",List.ofArray([AttrProxy.Create("class","property")]),List.ofArray([Doc.TextNode(name)]));
-    },
-    toDoc:function(elm)
-    {
-     return elm;
-    }
-   }
-  }
- });
- Runtime.OnInit(function()
- {
+  Types=Runtime.Safe(Domain.Types);
+  InvalidPropertyError=Runtime.Safe(Types.InvalidPropertyError);
+  T=Runtime.Safe(List.T);
+  Utils=Runtime.Safe(Global.Utils);
+  Utils1=Runtime.Safe(Utils.Utils);
+  Seq=Runtime.Safe(Global.WebSharper.Seq);
+  Math=Runtime.Safe(Global.Math);
+  Random=Runtime.Safe(Global.WebSharper.Random);
   UI=Runtime.Safe(Global.WebSharper.UI);
   Next=Runtime.Safe(UI.Next);
   Doc=Runtime.Safe(Next.Doc);
   Web=Runtime.Safe(Global.Web);
   Components=Runtime.Safe(Web.Components);
   Client=Runtime.Safe(Web.Client);
-  List=Runtime.Safe(Global.WebSharper.List);
-  T=Runtime.Safe(List.T);
-  return AttrProxy=Runtime.Safe(Next.AttrProxy);
+  Game=Runtime.Safe(Web.Game);
+  AttrProxy=Runtime.Safe(Next.AttrProxy);
+  Strings=Runtime.Safe(Web.Strings);
+  Property=Runtime.Safe(Types.Property);
+  Configuration=Runtime.Safe(Domain.Configuration);
+  Collections=Runtime.Safe(Global.WebSharper.Collections);
+  return MapModule=Runtime.Safe(Collections.MapModule);
  });
  Runtime.OnLoad(function()
  {
-  Client.playerState();
+  Strings.propertyNames();
+  Game.rnd();
+  Game.fullDeck();
+  Client.player();
   Client.Main();
+  Utils1.random();
+  Configuration.features();
+  Configuration.cards();
   return;
  });
 }());
