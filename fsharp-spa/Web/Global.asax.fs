@@ -1,4 +1,4 @@
-namespace fsharp_spa
+namespace Web
 
 type Global() =
     inherit System.Web.HttpApplication()
