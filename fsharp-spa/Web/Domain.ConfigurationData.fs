@@ -4,7 +4,7 @@ open WebSharper
 open Types
 
 [<JavaScript>]
-module Configuration =
+module ConfigurationData =
 
   let features = [
     (Carnivorous, { 

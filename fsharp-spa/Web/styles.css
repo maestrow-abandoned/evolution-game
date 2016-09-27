@@ -1,0 +1,48 @@
+﻿div {
+  border-style: solid;
+  border-width: 1px;
+}
+
+.game-view {
+  display: flex;
+  flex-direction: row;
+}
+
+.hand {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+.food {
+  height: 30px;
+}
+
+.players {
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+}
+
+.player {
+  max-width: 700px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.anymal {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.property {
+  max-width: 400px;
+  min-width: 50px;
+  text-align: center;
+} 
+

@@ -49,11 +49,12 @@
     <Content Include="InteractiveDraft.fsx" />
     <None Include="Setup.fsx" />
     <Content Include="packages.config" />
-    <Content Include="player.css" />
+    <Content Include="styles.css" />
     <Compile Include="Utils.fs" />
     <Compile Include="Domain.Types.fs" />
-    <Compile Include="Domain.Configuration.fs" />
-    <Compile Include="Domain.Game.fs" />
+    <Compile Include="Domain.ConfigurationData.fs" />
+    <Compile Include="Domain.Services.fs" />
+    <Compile Include="Domain.RandomGameStateGenerator.fs" />
     <Compile Include="Domain.Strings.fs" />
     <Compile Include="Web.Components.fs" />
     <Compile Include="Web.Resources.fs" />

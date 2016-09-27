@@ -8,18 +8,14 @@ open WebSharper.UI.Next
 open WebSharper.UI.Next.Html
 open WebSharper.UI.Next.Client
 
-open Domain
-open Domain.Types
-open Domain.Configuration
-open Components
-open Utils
-open Utils.Utils
+module srv = Domain.Services
+module gen = Domain.RandomGameStateGenerator
 
 [<JavaScript>]
 module Client = 
-  let player = fst (Game.createRandomPlayer Game.fullDeck)
+  let players = gen.createGameState srv.fullDeck
   let Main = 
-    player
-    |> Components.createPlayer 
+    players
+    |> Components.createGameView
     |> Doc.RunById "main" 
 
