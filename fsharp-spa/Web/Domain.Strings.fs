@@ -1,7 +1,7 @@
-﻿namespace Web
+﻿namespace Domain
 
 open WebSharper
-open Domain.Types
+open Types
 
 [<JavaScript>]
 module Strings =

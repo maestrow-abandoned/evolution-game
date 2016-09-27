@@ -53,8 +53,10 @@
     <Compile Include="Utils.fs" />
     <Compile Include="Domain.Types.fs" />
     <Compile Include="Domain.Configuration.fs" />
-    <Compile Include="Web.Strings.fs" />
+    <Compile Include="Domain.Game.fs" />
+    <Compile Include="Domain.Strings.fs" />
     <Compile Include="Web.Components.fs" />
+    <Compile Include="Web.Resources.fs" />
     <Compile Include="Web.Startup.fs" />
   </ItemGroup>
   <ItemGroup>
