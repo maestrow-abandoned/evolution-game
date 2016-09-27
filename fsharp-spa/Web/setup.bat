@@ -1,0 +1,1 @@
+"../packages/Paket.3.19.8/tools/paket.exe" update

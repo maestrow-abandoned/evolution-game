@@ -47,6 +47,7 @@
     <Content Include="Global.asax" />
     <Compile Include="Global.asax.fs" />
     <Content Include="InteractiveDraft.fsx" />
+    <Content Include="paket.dependencies" />
     <None Include="Setup.fsx" />
     <Content Include="packages.config" />
     <Content Include="styles.css" />
